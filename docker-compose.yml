@@ -1,0 +1,32 @@
+version: "2"
+services:
+  # nginx proxy used to route to different apps
+  app:
+    container_name: app
+    # links:
+    #   - db
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    networks:
+      - default
+    ports:
+      - "8080:8080"
+
+  # db:
+  #   container_name: db
+  #   image: postgres:9.4
+  #   environment:
+  #     POSTGRES_USER: test
+  #     POSTGRES_PASSWORD: test
+  #   networks:
+  #     - default
+  #
+  # localtunnel:
+  #   image: efrecon/localtunnel
+  #   command: --local-host app --port 8080 --subdomain <bot name>
+
+networks:
+  default:
