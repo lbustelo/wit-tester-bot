@@ -11,6 +11,7 @@ let app = express()
 let botRunning = false;
 
 app.get('/', function (req, res){
+  console.log("Got root request");
   if(botRunning){
     res.send('Running');
   }
