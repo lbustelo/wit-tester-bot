@@ -30,9 +30,10 @@ if( !config.WIT_TOKEN ) {
   process.exit(1);
 }
 
+console.log(`Starting web on port ${config.PORT}...`);
 app.listen(config.PORT, (err) => {
   if (err) throw err
-  console.log(`\nWeb Server running on ${config.PORT} 🚀`);
+  console.log(`Web server running!`);
 
   console.log(`Starting bot...`);
   // connect the bot to a stream of messages
