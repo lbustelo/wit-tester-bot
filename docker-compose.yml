@@ -1,19 +1,17 @@
 version: "2"
 services:
-  # nginx proxy used to route to different apps
   app:
     container_name: app
-    # links:
-    #   - db
     build:
       context: ./docker
       dockerfile: Dockerfile
     volumes:
       - .:/app
-    networks:
-      - default
     ports:
       - "8080:8080"
+    networks:
+      - default
+
 
   # db:
   #   container_name: db

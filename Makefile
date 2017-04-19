@@ -5,7 +5,7 @@ NODE_IMAGE=node:6-slim
 BOT_DEBUG?=false
 
 include .env
-	
+
 help:
 	#source:http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -17,9 +17,10 @@ init: ## Initializes the project by installing any depdendcies
 init: node-init
 
 build: ## Build docker image
+	@docker-compose build app
 
 dev: ## Run robot
-	@docker-compose run \
+	@docker-compose run --service-ports\
 		-e DB_HOST=$(DB_HOST) \
 		-e BOT_DEBUG=$(BOT_DEBUG) \
 		-e SLACK_TOKEN=$(SLACK_TOKEN) \
@@ -27,7 +28,7 @@ dev: ## Run robot
 		app node_modules/.bin/gulp dev
 
 run: ## Run robot
-	@docker-compose run \
+	@docker-compose run --service-ports\
 		-e DB_HOST=$(DB_HOST) \
 		-e BOT_DEBUG=$(BOT_DEBUG) \
 		-e SLACK_TOKEN=$(SLACK_TOKEN) \
@@ -56,3 +57,6 @@ shutdown: ## Stops all containers
 clean: shutdown
 clean: ## Cleans environment
 	-@rm -rf node_modules
+
+heroku-config:
+	while read -r line; do heroku config:set $$line; done < .env
