@@ -1,7 +1,23 @@
-var Botkit = require('botkit');
-var config = require('./config/config');
-var WitController = require('./lib/wit/controller');
-var WitUtils = require('./lib/wit/wit-utils');
+'use strict'
+
+const Botkit = require('botkit');
+const config = require('./config/config');
+const WitController = require('./lib/wit/controller');
+const WitUtils = require('./lib/wit/wit-utils');
+
+const express = require('express');
+
+let app = express()
+let botRunning = false;
+
+app.get('/', function (req, res){
+  if(botRunning){
+    res.send('Running');
+  }
+  else{
+    res.send('Not running');
+  }
+});
 
 if( !config.SLACK_TOKEN ){
   console.log('Error: Specify SLACK_TOKEN in environment');
@@ -13,6 +29,11 @@ if( !config.WIT_TOKEN ) {
   process.exit(1);
 }
 
+app.listen(config.PORT, (err) => {
+  if (err) throw err
+  console.log(`\n🚀  Starbot LIVES on PORT ${config.PORT} 🚀`);
+})
+
 var controller = Botkit.slackbot({
   debug: config.BOT_DEBUG
 });
@@ -23,6 +44,7 @@ controller.spawn({token: config.SLACK_TOKEN}).startRTM(
     if (err) {
         throw new Error(err);
     }
+    botRunning = true;
   }
 );
 
