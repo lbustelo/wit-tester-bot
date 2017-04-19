@@ -33,21 +33,26 @@ if( !config.WIT_TOKEN ) {
 app.listen(config.PORT, (err) => {
   if (err) throw err
   console.log(`\nWeb Server running on ${config.PORT} 🚀`);
+
+  console.log(`Starting bot...`);
+  // connect the bot to a stream of messages
+  controller.spawn({token: config.SLACK_TOKEN}).startRTM(
+    function (err, bot) {
+      if (err) {
+          throw new Error(err);
+      }
+      botRunning = true;
+
+      console.log(`Bot connected!`);
+    }
+  );
+
 })
 
 var controller = Botkit.slackbot({
   debug: config.BOT_DEBUG
 });
 
-// connect the bot to a stream of messages
-controller.spawn({token: config.SLACK_TOKEN}).startRTM(
-  function (err, bot) {
-    if (err) {
-        throw new Error(err);
-    }
-    botRunning = true;
-  }
-);
 
 // Controllers
 var witController = WitController.usingToken(config.WIT_TOKEN);
