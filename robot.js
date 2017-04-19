@@ -31,7 +31,7 @@ if( !config.WIT_TOKEN ) {
 
 app.listen(config.PORT, (err) => {
   if (err) throw err
-  console.log(`\n🚀  Starbot LIVES on PORT ${config.PORT} 🚀`);
+  console.log(`\nWeb Server running on ${config.PORT} 🚀`);
 })
 
 var controller = Botkit.slackbot({
